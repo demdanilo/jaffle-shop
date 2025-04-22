@@ -3,7 +3,7 @@ with
 
 source as (
 
-    select * from {{ source('ecom', 'raw_customers') }}
+    select * from {{ source('raw', 'raw_customers') }}
 
 ),
 
