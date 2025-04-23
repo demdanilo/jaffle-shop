@@ -1,0 +1,7 @@
+entities:
+  - name: customer_id
+    type: primary
+  - name: last_ordered_at
+    type: time
+    type_params:
+      time_granularity: day

@@ -1,0 +1,5 @@
+entities:
+  - name: median_revenue
+    description: the median revenue generated for each order item
+    agg: median
+    expr: product_price

@@ -1,22 +1,27 @@
-with
+{{ config(
+    materialized='view'
+) }}
 
-source as (
-
-    select * from {{ source('jaffle_shop', 'raw_items') }}
-
-),
-
-renamed as (
+with order_items as (
 
     select
-
-        ----------  ids
-        id as order_item_id,
+        order_item_id,
         order_id,
-        sku as product_id
-
-    from source
+        product_id,
+        quantity,
+        price,
+        created_at
+    from
+        {{ source('jaffle_shop', 'order_items') }}
 
 )
 
-select * from renamed
+select
+    order_item_id,
+    order_id,
+    product_id,
+    quantity,
+    price,
+    created_at
+from
+    order_items

@@ -1,24 +1,12 @@
+{{ config(
+    materialized='view'
+) }}
 
-with
-
-source as (
-
-    select * from {{ source('raw', 'raw_customers') }}
-
-),
-
-renamed as (
-
-    select
-
-        ----------  ids
-        id as customer_id,
-
-        ---------- text
-        name as customer_name
-
-    from source
-
-)
-
-select * from renamed
+select
+    customer_id,
+    first_name,
+    last_name,
+    email,
+    created_at
+from
+    {{ source('jaffle_shop', 'customers') }}

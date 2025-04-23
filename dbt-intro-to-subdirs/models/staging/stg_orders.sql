@@ -1,33 +1,21 @@
-with
+{{ config(
+    materialized='view'
+) }}
 
-source as (
-
-    select * from {{ source('jaffle_shop', 'raw_products') }}
-
-),
-
-renamed as (
-
+with orders as (
     select
-
-        ----------  ids
-        id as order_id,
-        store_id as location_id,
-        customer as customer_id,
-
-        ---------- numerics
-        subtotal as subtotal_cents,
-        tax_paid as tax_paid_cents,
-        order_total as order_total_cents,
-        {{ cents_to_dollars('subtotal') }} as subtotal,
-        {{ cents_to_dollars('tax_paid') }} as tax_paid,
-        {{ cents_to_dollars('order_total') }} as order_total,
-
-        ---------- timestamps and validation
-        {{ dbt.date_trunc('day','ordered_at') }} as ordered_at
-
-    from source
-
+        order_id,
+        customer_id,
+        order_date,
+        total_amount,
+        status
+    from {{ source('jaffle_shop', 'orders') }}
 )
 
-select * from renamed
+select
+    order_id,
+    customer_id,
+    order_date,
+    total_amount,
+    status
+from orders
